@@ -1,41 +1,213 @@
+
 <!doctype html>
-<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#d81b73"><meta name="description" content="Pink Shopping ร้านเครื่องสำอางออนไลน์ เลือกซื้อสินค้าความงามได้ง่าย ๆ"><title>Pink Shopping | ร้านเครื่องสำอางออนไลน์</title><link rel="stylesheet" href="style.css"><link rel="icon" type="image/png" href="pink-shop-logo.png"><link rel="apple-touch-icon" href="pink-shop-logo.png"></head>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#d81b73">
+<meta name="description" content="Pink Shopping ร้านเครื่องสำอางออนไลน์ เลือกซื้อสินค้าความงามได้ง่าย ๆ">
+<title>Pink Shopping | ร้านเครื่องสำอางออนไลน์</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="pink-shop-logo.png">
+<link rel="apple-touch-icon" href="pink-shop-logo.png">
+</head>
+
 <body>
-<div class="topline">PINK SHOPPING  |  BEAUTY & COSMETICS</div>
-<header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><img class="pink-brand-logo" src="pink-shop-logo.png" alt="โลโก้ PINK SHOP" width="52" height="52"><span>PINK <strong>SHOPPING</strong><small>BEAUTY & COSMETICS</small></span></a><div class="search-wrap"><label class="sr-only" for="search">ค้นหาสินค้า</label><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="ค้นหาลิปสติก สกินแคร์ น้ำหอม..." autocomplete="off"></div><nav><a href="#products-heading">สินค้า</a><a href="my-orders.html">📦 คำสั่งซื้อของฉัน</a><a class="cart-link" href="#cart-section">🛒 ตะกร้าของฉัน <span id="cart-count">0</span></a><a class="admin-link" href="admin.html">หลังร้าน</a></nav></div></header>
-<main><section class="hero hero-photo" aria-label="Pink Shopping ร้านเครื่องสำอางและผลิตภัณฑ์ความงาม"><img src="pink-shopping-banner.png" alt="Pink Shopping สวยครบในร้านเดียว รวมเครื่องสำอาง สกินแคร์ และผลิตภัณฑ์ดูแลความงาม" fetchpriority="high"><a class="hero-photo-link" href="#products-heading" aria-label="ช้อปสินค้า Pink Shopping เลื่อนลงไปยังรายการสินค้า"></a></section>
-<div class="cart-top" aria-label="ตะกร้าสินค้าด้านบน"><section class="panel" id="cart-section"><div class="panel-heading"><h2>🛒 ตะกร้าสินค้า</h2><span>รายการที่เลือก</span></div><div id="cart"></div><div class="cart-summary"><div><span>ยอดรวมสินค้า</span><strong id="total">฿0.00</strong></div><small>ค่าจัดส่งและส่วนลด (ถ้ามี) จะต้องได้รับการยืนยันจากร้าน</small></div><a class="go-checkout" href="#checkout-section">ดำเนินการสั่งซื้อ →</a></section></div>
-<section class="quick-categories" aria-label="เลือกหมวดหมู่"><div class="section-heading"><div><span class="eyebrow">BROWSE BY CATEGORY</span><h2>ช้อปตามหมวดหมู่</h2></div></div><div id="category-tiles" class="category-tiles"></div></section>
-<section class="featured-area" id="featured-area" hidden><div class="section-heading"><div><span class="eyebrow">PINK SHOPPING PICKS</span><h2>✨ สินค้าพร้อมช้อป</h2></div><a href="#products-heading" class="view-all">ดูสินค้าทั้งหมด →</a></div><div id="featured-products" class="grid featured-grid"></div></section>
-<section class="benefits" aria-label="จุดเด่นของร้าน"><div>🎀 <span><strong>สินค้าความงาม</strong><small>เลือกช้อปได้สะดวก</small></span></div><div>📦 <span><strong>สั่งซื้อออนไลน์</strong><small>แจ้งที่อยู่จัดส่งได้ทันที</small></span></div><div>💬 <span><strong>ติดต่อยืนยันออเดอร์</strong><small>ร้านค้าติดต่อกลับหลังสั่งซื้อ</small></span></div></section>
-<section class="shop-area"><div class="section-heading"><div><span class="eyebrow">SHOP OUR COLLECTION</span><h2 id="products-heading">เลือกช้อปสินค้าของเรา <span>♡</span></h2></div><span class="section-note" id="product-count"></span></div><div class="category-bar" id="categories" aria-label="หมวดหมู่สินค้า"><button class="category active" type="button" data-category="ทั้งหมด">สินค้าทั้งหมด</button></div><p id="message" role="status" aria-live="polite"></p><section id="products" class="grid" aria-label="รายการสินค้า"></section></section>
-<dialog id="variant-dialog" class="variant-dialog"><form method="dialog"><button class="variant-close" aria-label="ปิด">✕</button></form><div id="variant-detail"></div></dialog>
-<section class="panel checkout-panel" id="checkout-section"><div class="panel-heading"><h2>🚚 ที่อยู่จัดส่ง / ยืนยันคำสั่งซื้อ</h2><span>ไม่ต้องสมัครสมาชิกหรือเข้าสู่ระบบ</span></div><div class="checkout-steps"><span class="active">1. เลือกสินค้า</span><span>2. ข้อมูลจัดส่ง</span><span>3. ร้านยืนยันคำสั่งซื้อ</span></div><div class="shipping-grid"><div><label for="customer">ชื่อผู้รับ</label><input id="customer" placeholder="ชื่อ–นามสกุล"></div><div><label for="phone">เบอร์โทรศัพท์</label><input id="phone" type="tel" placeholder="08xxxxxxxx"></div></div><label for="address">ที่อยู่จัดส่งและรหัสไปรษณีย์</label><textarea id="address" rows="3" placeholder="บ้านเลขที่ ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์"></textarea><p id="checkout-status" role="status" aria-live="assertive" hidden></p><button id="checkout" class="checkout-button" type="button">ยืนยันคำสั่งซื้อ (ไม่ต้องล็อกอิน) →</button><p id="last-order" class="muted" hidden role="status"></p><p class="muted">ยังไม่รับชำระเงินออนไลน์ ร้านค้าจะติดต่อกลับเพื่อยืนยันการชำระเงินและจัดส่ง</p></section>
-<section class="scb-payment" id="scb-payment" aria-labelledby="scb-title">
-  <div class="scb-decor scb-heart-one" aria-hidden="true">♥</div>
-  <div class="scb-decor scb-heart-two" aria-hidden="true">♡</div>
-  <div class="scb-decor scb-sparkle-one" aria-hidden="true">✦</div>
-  <div class="scb-decor scb-sparkle-two" aria-hidden="true">✧</div>
-  <div class="scb-payment-inner">
-    <div class="scb-brand-row">
-      <span class="scb-logo" aria-label="SCB">SCB</span>
-      <span class="scb-bank-name">SIAM COMMERCIAL BANK<br><small>ธนาคารไทยพาณิชย์</small></span>
-    </div>
-    <p class="scb-kicker">PINK SHOPPING · PROMPTPAY</p>
-    <h2 id="scb-title">สแกนชำระเงิน <span>♡</span></h2>
-    <p class="scb-subtitle">ขอบคุณที่อุดหนุนร้านพิงค์ช็อปปิ้งนะคะ</p>
-    <div class="scb-qr-frame">
-      <div class="scb-ribbon" aria-hidden="true">🎀</div>
-      <div class="scb-qr-paper">
-        <img src="scb-qr.jpeg" alt="QR Code PromptPay สำหรับชำระเงินให้บริษัท พิงค์ช็อปปิ้ง จำกัด" class="scb-qr-image">
-      </div>
-      <span class="scb-frame-caption">PROMPTPAY QR CODE</span>
-    </div>
-    <p class="scb-company">บริษัท พิงค์ช็อปปิ้ง จำกัด</p>
-    <p class="scb-hint">ตรวจสอบชื่อผู้รับและยอดเงินให้ถูกต้องก่อนยืนยันการโอนทุกครั้ง</p>
-    <a class="scb-save-button" href="scb-qr.jpeg" download="Pink-Shopping-SCB-PromptPay.jpg">↓ บันทึก QR สำหรับชำระเงิน</a>
-    <p class="scb-thanks">ขอบคุณลูกค้าทุกท่านค่ะ <span>♥</span></p>
-  </div>
+<div class="topline">PINK SHOPPING | BEAUTY & COSMETICS</div>
+
+<header class="site-header">
+<div class="header-inner">
+<a class="brand" href="index.html">
+<img class="pink-brand-logo" src="pink-shop-logo.png" alt="โลโก้ PINK SHOP" width="52" height="52">
+<span>PINK <strong>SHOPPING</strong><small>BEAUTY & COSMETICS</small></span>
+</a>
+
+<div class="search-wrap">
+<label class="sr-only" for="search">ค้นหาสินค้า</label>
+<span aria-hidden="true">⌕</span>
+<input id="search" type="search" placeholder="ค้นหาลิปสติก สกินแคร์ น้ำหอม..." autocomplete="off">
+</div>
+
+<nav>
+<a href="#products-heading">สินค้า</a>
+<a href="my-orders.html">📦 คำสั่งซื้อของฉัน</a>
+<a class="cart-link" href="#cart-section">🛒 ตะกร้าของฉัน <span id="cart-count">0</span></a>
+<a class="admin-link" href="admin.html">หลังร้าน</a>
+</nav>
+</div>
+</header>
+
+<main>
+
+<section class="hero hero-photo" aria-label="Pink Shopping ร้านเครื่องสำอางและผลิตภัณฑ์ความงาม">
+<img src="pink-shopping-banner.png" alt="Pink Shopping สวยครบในร้านเดียว รวมเครื่องสำอาง สกินแคร์ และผลิตภัณฑ์ดูแลความงาม" fetchpriority="high">
+<a class="hero-photo-link" href="#products-heading" aria-label="ช้อปสินค้า Pink Shopping เลื่อนลงไปยังรายการสินค้า"></a>
 </section>
+
+<div class="cart-top" aria-label="ตะกร้าสินค้าด้านบน">
+<section class="panel" id="cart-section">
+<div class="panel-heading">
+<h2>🛒 ตะกร้าสินค้า</h2>
+<span>รายการที่เลือก</span>
+</div>
+<div id="cart"></div>
+<div class="cart-summary">
+<div><span>ยอดรวมสินค้า</span><strong id="total">฿0.00</strong></div>
+<small>ค่าจัดส่งและส่วนลด (ถ้ามี) จะต้องได้รับการยืนยันจากร้าน</small>
+</div>
+<a class="go-checkout" href="#checkout-section">ดำเนินการสั่งซื้อ →</a>
+</section>
+</div>
+
+<section class="quick-categories" aria-label="เลือกหมวดหมู่">
+<div class="section-heading">
+<div>
+<span class="eyebrow">BROWSE BY CATEGORY</span>
+<h2>ช้อปตามหมวดหมู่</h2>
+</div>
+</div>
+<div id="category-tiles" class="category-tiles"></div>
+</section>
+
+<section class="featured-area" id="featured-area" hidden>
+<div class="section-heading">
+<div>
+<span class="eyebrow">PINK SHOPPING PICKS</span>
+<h2>✨ สินค้าพร้อมช้อป</h2>
+</div>
+<a href="#products-heading" class="view-all">ดูสินค้าทั้งหมด →</a>
+</div>
+<div id="featured-products" class="grid featured-grid"></div>
+</section>
+
+<section class="benefits" aria-label="จุดเด่นของร้าน">
+<div>🎀 <span><strong>สินค้าความงาม</strong><small>เลือกช้อปได้สะดวก</small></span></div>
+<div>📦 <span><strong>สั่งซื้อออนไลน์</strong><small>แจ้งที่อยู่จัดส่งได้ทันที</small></span></div>
+<div>💬 <span><strong>ติดต่อยืนยันออเดอร์</strong><small>ร้านค้าติดต่อกลับหลังสั่งซื้อ</small></span></div>
+</section>
+
+<section class="shop-area">
+<div class="section-heading">
+<div>
+<span class="eyebrow">SHOP OUR COLLECTION</span>
+<h2 id="products-heading">เลือกช้อปสินค้าของเรา <span>♡</span></h2>
+</div>
+<span class="section-note" id="product-count"></span>
+</div>
+
+<div class="category-bar" id="categories" aria-label="หมวดหมู่สินค้า">
+<button class="category active" type="button" data-category="ทั้งหมด">สินค้าทั้งหมด</button>
+</div>
+<p id="message" role="status" aria-live="polite"></p>
+<section id="products" class="grid" aria-label="รายการสินค้า"></section>
+</section>
+
+<dialog id="variant-dialog" class="variant-dialog">
+<form method="dialog">
+<button class="variant-close" aria-label="ปิด">✕</button>
+</form>
+<div id="variant-detail"></div>
+</dialog>
+
+<section class="panel checkout-panel" id="checkout-section">
+<div class="panel-heading">
+<h2>🚚 ที่อยู่จัดส่ง / ยืนยันคำสั่งซื้อ</h2>
+<span>ไม่ต้องสมัครสมาชิกหรือเข้าสู่ระบบ</span>
+</div>
+
+<div class="checkout-steps">
+<span class="active">1. เลือกสินค้า</span>
+<span>2. ข้อมูลจัดส่ง</span>
+<span>3. ร้านยืนยันคำสั่งซื้อ</span>
+</div>
+
+<div class="shipping-grid">
+<div>
+<label for="customer">ชื่อผู้รับ</label>
+<input id="customer" placeholder="ชื่อ–นามสกุล">
+</div>
+<div>
+<label for="phone">เบอร์โทรศัพท์</label>
+<input id="phone" type="tel" placeholder="08xxxxxxxx">
+</div>
+</div>
+
+<label for="address">ที่อยู่จัดส่งและรหัสไปรษณีย์</label>
+<textarea id="address" rows="3" placeholder="บ้านเลขที่ ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์"></textarea>
+
+<p id="checkout-status" role="status" aria-live="assertive" hidden></p>
+
+<button id="checkout" class="checkout-button" type="button">
+ยืนยันคำสั่งซื้อ (ไม่ต้องล็อกอิน) →
+</button>
+
+<p id="last-order" class="muted" hidden role="status"></p>
+<p class="muted">ยังไม่รับชำระเงินออนไลน์ ร้านค้าจะติดต่อกลับเพื่อยืนยันการชำระเงินและจัดส่ง</p>
+</section>
+
+<!-- SCB PROMPTPAY PAYMENT -->
+<section class="scb-payment" id="scb-payment" aria-labelledby="scb-title">
+
+<div class="scb-decor scb-heart-one" aria-hidden="true">♥</div>
+<div class="scb-decor scb-heart-two" aria-hidden="true">♡</div>
+<div class="scb-decor scb-sparkle-one" aria-hidden="true">✦</div>
+<div class="scb-decor scb-sparkle-two" aria-hidden="true">✧</div>
+
+<div class="scb-payment-inner">
+
+<div class="scb-brand-row">
+<span class="scb-logo" aria-label="SCB">SCB</span>
+<span class="scb-bank-name">
+SIAM COMMERCIAL BANK<br>
+<small>ธนาคารไทยพาณิชย์</small>
+</span>
+</div>
+
+<p class="scb-kicker">PINK SHOPPING · PROMPTPAY</p>
+
+<h2 id="scb-title">สแกนชำระเงิน <span>♡</span></h2>
+<p class="scb-subtitle">ขอบคุณที่อุดหนุนร้านพิงค์ช็อปปิ้งนะคะ</p>
+
+<div class="scb-qr-frame">
+<div class="scb-ribbon" aria-hidden="true">🎀</div>
+
+<div class="scb-qr-paper">
+<img
+src="IMG_6951.jpeg"
+alt="QR Code PromptPay สำหรับชำระเงินให้บริษัท พิงค์ช็อปปิ้ง จำกัด"
+class="scb-qr-image">
+</div>
+
+<span class="scb-frame-caption">PROMPTPAY QR CODE</span>
+</div>
+
+<p class="scb-company">บริษัท พิงค์ช็อปปิ้ง จำกัด</p>
+
+<p class="scb-hint">
+ตรวจสอบชื่อผู้รับและยอดเงินให้ถูกต้องก่อนยืนยันการโอนทุกครั้ง
+</p>
+
+<a
+class="scb-save-button"
+href="IMG_6951.jpeg"
+download="Pink-Shopping-SCB-PromptPay.jpeg">
+↓ บันทึก QR สำหรับชำระเงิน
+</a>
+
+<p class="scb-thanks">ขอบคุณลูกค้าทุกท่านค่ะ <span>♥</span></p>
+
+</div>
+</section>
+
 </main>
-<footer><strong>✿ PINK SHOPPING</strong><p>ร้านเครื่องสำอางออนไลน์ของคุณ</p><small>© Pink Shopping</small></footer><script type="module" src="shop.js"></script></body></html>
+
+<footer>
+<strong>✿ PINK SHOPPING</strong>
+<p>ร้านเครื่องสำอางออนไลน์ของคุณ</p>
+<small>© Pink Shopping</small>
+</footer>
+
+<script type="module" src="shop.js"></script>
+
+</body>
+</html>
