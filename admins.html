@@ -1,0 +1,12 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pink Shopping | จัดการแอดมิน</title><link rel="stylesheet" href="style.css"></head><body>
+<header><h1>🌸 PINK SHOPPING | จัดการแอดมิน</h1><nav class="admin-nav"><a href="admin.html">📦 สินค้าและสต็อก</a><a href="orders.html">🧾 จัดการออเดอร์</a><a href="admins.html" aria-current="page">👥 จัดการแอดมิน</a><a href="finance.html">💰 การเงิน</a><a href="index.html">หน้าร้าน</a></nav></header>
+<main><p id="message" role="status"></p>
+<section id="gate" class="panel"><h2>เข้าสู่ระบบหลังร้าน</h2><input id="email" type="email" placeholder="อีเมลแอดมิน"><input id="password" type="password" placeholder="รหัสผ่าน"><button id="login">เข้าสู่ระบบ</button></section>
+<div id="dashboard" class="hidden">
+<section class="panel"><span id="who"></span> <button id="logout" class="secondary">ออกจากระบบ</button><h2>เพิ่มแอดมินหลังร้าน</h2>
+<p>แอดมินทุกคนมีสิทธิ์เท่ากัน ทั้งสินค้า สต็อก ออเดอร์ และจัดการแอดมิน</p>
+<p><strong>ก่อนเพิ่ม:</strong> สร้างหรือเชิญบัญชีพนักงานใน Supabase → Authentication → Users ให้เรียบร้อยก่อน แล้วกรอกอีเมลเดียวกันด้านล่าง (ไม่ต้องส่งรหัสผ่านให้กัน)</p>
+<form id="add-admin-form"><label>อีเมลบัญชีที่จะเพิ่ม<input id="new-admin-email" type="email" autocomplete="off" placeholder="staff@example.com" required></label><button type="submit">เพิ่มเป็นแอดมิน</button></form>
+<p class="muted">ต้องรันไฟล์ <code>V12_ADMIN_MANAGEMENT.sql</code> ใน Supabase SQL Editor ก่อนใช้งานเมนูนี้</p></section>
+<section class="panel"><h2>รายชื่อแอดมิน</h2><button type="button" class="secondary" id="reload-admins">รีเฟรชรายชื่อ</button><div id="admin-list" class="scroll"></div><p class="muted">เพื่อความปลอดภัย ระบบไม่อนุญาตให้ลบบัญชีตัวเองหรือแอดมินคนสุดท้าย</p></section></div>
+</main><script type="module" src="admins.js"></script></body></html>
