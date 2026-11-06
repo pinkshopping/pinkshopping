@@ -41,10 +41,10 @@
 
 <section class="hero hero-photo" aria-label="Pink Shopping ร้านเครื่องสำอางและผลิตภัณฑ์ความงาม">
 <img src="pink-shopping-banner.png" alt="Pink Shopping สวยครบในร้านเดียว รวมเครื่องสำอาง สกินแคร์ และผลิตภัณฑ์ดูแลความงาม" fetchpriority="high">
-<a class="hero-photo-link" href="#products-heading" aria-label="ช้อปสินค้า Pink Shopping เลื่อนลงไปยังรายการสินค้า"></a>
+<a class="hero-photo-link" href="#products-heading" aria-label="ช้อปสินค้า Pink Shopping"></a>
 </section>
 
-<div class="cart-top" aria-label="ตะกร้าสินค้าด้านบน">
+<div class="cart-top">
 <section class="panel" id="cart-section">
 <div class="panel-heading">
 <h2>🛒 ตะกร้าสินค้า</h2>
@@ -118,7 +118,7 @@
 <div class="checkout-steps">
 <span class="active">1. เลือกสินค้า</span>
 <span>2. ข้อมูลจัดส่ง</span>
-<span>3. ร้านยืนยันคำสั่งซื้อ</span>
+<span>3. ยืนยันคำสั่งซื้อ</span>
 </div>
 
 <div class="shipping-grid">
@@ -135,17 +135,32 @@
 <label for="address">ที่อยู่จัดส่งและรหัสไปรษณีย์</label>
 <textarea id="address" rows="3" placeholder="บ้านเลขที่ ถนน ตำบล อำเภอ จังหวัด รหัสไปรษณีย์"></textarea>
 
-<p id="checkout-status" role="status" aria-live="assertive" hidden></p>
+<!-- PAYMENT METHOD -->
+<div class="payment-method-box">
+<h3>💗 เลือกวิธีชำระเงิน</h3>
 
-<button id="checkout" class="checkout-button" type="button">
-ยืนยันคำสั่งซื้อ (ไม่ต้องล็อกอิน) →
-</button>
+<label class="payment-option">
+<input type="radio" name="payment-method" value="scb_qr" checked>
+<span class="payment-icon">📱</span>
+<span class="payment-option-text">
+<strong>โอนเงินผ่าน QR PromptPay</strong>
+<small>สแกน QR และแนบหลักฐานการโอน</small>
+</span>
+</label>
 
-<p id="last-order" class="muted" hidden role="status"></p>
-<p class="muted">ยังไม่รับชำระเงินออนไลน์ ร้านค้าจะติดต่อกลับเพื่อยืนยันการชำระเงินและจัดส่ง</p>
-</section>
+<label class="payment-option">
+<input type="radio" name="payment-method" value="cod">
+<span class="payment-icon">🚚</span>
+<span class="payment-option-text">
+<strong>เก็บเงินปลายทาง (COD)</strong>
+<small>ชำระเงินเมื่อได้รับสินค้า</small>
+</span>
+</label>
+</div>
 
-<!-- SCB PROMPTPAY PAYMENT -->
+<!-- QR PAYMENT: shown only when QR is selected -->
+<div id="qr-payment">
+
 <section class="scb-payment" id="scb-payment" aria-labelledby="scb-title">
 
 <div class="scb-decor scb-heart-one" aria-hidden="true">♥</div>
@@ -199,6 +214,31 @@ download="Pink-Shopping-SCB-PromptPay.jpeg">
 </div>
 </section>
 
+<div class="payment-slip-box">
+<label for="payment-slip">📎 แนบสลิปการโอนเงิน</label>
+<input
+type="file"
+id="payment-slip"
+accept="image/jpeg,image/png,application/pdf">
+<small>รองรับ JPG, PNG และ PDF ขนาดไม่เกิน 5 MB</small>
+</div>
+
+</div>
+
+<p class="payment-cod-note" id="cod-note" hidden>
+🚚 คุณเลือกเก็บเงินปลายทาง ไม่ต้องแนบสลิปค่ะ
+</p>
+
+<p id="checkout-status" role="status" aria-live="assertive" hidden></p>
+
+<button id="checkout" class="checkout-button" type="button">
+ยืนยันคำสั่งซื้อ (ไม่ต้องล็อกอิน) →
+</button>
+
+<p id="last-order" class="muted" hidden role="status"></p>
+<p class="muted">ร้านค้าจะติดต่อกลับเพื่อยืนยันคำสั่งซื้อและรายละเอียดการจัดส่งค่ะ</p>
+</section>
+
 </main>
 
 <footer>
@@ -208,6 +248,28 @@ download="Pink-Shopping-SCB-PromptPay.jpeg">
 </footer>
 
 <script type="module" src="shop.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const qrPayment = document.getElementById('qr-payment');
+  const codNote = document.getElementById('cod-note');
+  const paymentOptions = document.querySelectorAll('input[name="payment-method"]');
+
+  function updatePaymentDisplay() {
+    const selected = document.querySelector('input[name="payment-method"]:checked');
+    const isQR = !selected || selected.value === 'scb_qr';
+
+    if (qrPayment) qrPayment.hidden = !isQR;
+    if (codNote) codNote.hidden = isQR;
+  }
+
+  paymentOptions.forEach(function (option) {
+    option.addEventListener('change', updatePaymentDisplay);
+  });
+
+  updatePaymentDisplay();
+});
+</script>
 
 </body>
 </html>
