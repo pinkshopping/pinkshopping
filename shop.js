@@ -1,7 +1,7 @@
 import {db,money,esc,msg,session} from './common.js';
 let products=[],variants=[],cart={},activeCategory='ทั้งหมด',currentProduct=null,selection={},soldCounts={};const $=id=>document.getElementById(id);
 const fields=[['color','ตัวเลือกสินค้า'],['size','ขนาด'],['formula','กลิ่น / สูตร'],['pack','จำนวนต่อแพ็ก']];
-const variantsOf=id=>variants.filter(const variantsOf=id=>variants.filter(v=>v.product_id===id&&v.active););
+const variantsOf=id=>variants.filter(v=>Number(v.product_id)===Number(id)&&v.active);
 const keyOf=(id,vid)=>id+'|'+(vid||'');
 async function load(){const {data,error}=await db.from('products').select('id,name,price,stock,image_url,shopee_url').eq('is_active',true).order('created_at',{ascending:false});if(error)return msg(error.message,true);products=data||[];const ids=products.map(p=>p.id);variants=[];if(ids.length){for(let i=0;i<ids.length;i+=100){const r=await db.from('product_variants').select('id,product_id,color,size,formula,pack,price,stock,image_url,active').in('product_id',ids.slice(i,i+100)).eq('active',true).order('created_at',{ascending:true});if(r.error){msg('กรุณาติดตั้ง V6_VARIANTS.sql ก่อน: '+r.error.message,true);return;}variants.push(...(r.data||[]));}}drawCategories();draw();await loadSalesCounts();}
 function categoryOf(name){const n=name.toLowerCase();if(/ลิป|lip|ทินต์|tint|แป้ง|คุชชั่น|รองพื้น|บลัช|มาสคาร่า|eyeshadow|powder|cushion|makeup/.test(n))return 'ลิปและเมคอัพ';if(/ครีม|เซรั่ม|โฟม|กันแดด|คลีน|สกิน|โทนเนอร์|โลชั่น|serum|cream|skin|sunscreen/.test(n))return 'สกินแคร์';if(/น้ำหอม|perfume|fragrance|body mist/.test(n))return 'น้ำหอม';if(/แชมพู|ผม|สบู่|shampoo|hair|soap/.test(n))return 'ดูแลผิวและผม';return 'สินค้าอื่น ๆ';}
