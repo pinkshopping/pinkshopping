@@ -108,3 +108,27 @@ footer strong,footer p,footer small{color:#fff}
 
 /* PINK SHOP new logo: header only */
 .pink-brand-logo{width:52px;height:52px;object-fit:contain;border-radius:12px;flex-shrink:0;display:block}
+
+
+/* SCB PromptPay payment panel — Pink Shopping */
+.scb-payment{position:relative;isolation:isolate;overflow:hidden;margin:34px 0 12px;padding:clamp(26px,5vw,54px) 18px;border:1px solid #f3b8d4;border-radius:28px;background:radial-gradient(circle at 12% 18%,#fff 0 3px,transparent 4px),radial-gradient(circle at 88% 75%,#fff9 0 4px,transparent 5px),linear-gradient(135deg,#ffb8d9 0%,#ff78b7 38%,#f5a6cb 68%,#ffe4f1 100%);box-shadow:0 14px 36px #c72c7925;text-align:center}
+.scb-payment:before{content:"";position:absolute;inset:12px;border:1px dashed #fff9;border-radius:21px;pointer-events:none;z-index:-1}
+.scb-payment-inner{position:relative;max-width:540px;margin:auto;padding:24px 20px 22px;border:1px solid #fff;background:linear-gradient(160deg,#fff 0%,#fff9fc 100%);border-radius:25px;box-shadow:0 14px 35px #8e174b2b}
+.scb-brand-row{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:15px;text-align:left}
+.scb-logo{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#4b2b78;color:#fff;font-size:16px;font-weight:900;letter-spacing:-1px;box-shadow:0 4px 10px #4b2b7835}
+.scb-bank-name{font-size:10px;line-height:1.45;letter-spacing:.7px;color:#4b2b78;font-weight:800}.scb-bank-name small{font-size:11px;letter-spacing:0}
+.scb-kicker{margin:8px 0 4px;color:#bd2a70;font-size:10px;font-weight:850;letter-spacing:2px}
+.scb-payment h2{margin:4px 0;color:#8e2453;font-size:clamp(25px,4vw,34px);font-weight:850}.scb-payment h2 span{color:#e84b98}
+.scb-subtitle{margin:5px 0 20px;color:#95677e;font-size:13px}
+.scb-qr-frame{position:relative;width:min(100%,330px);margin:0 auto;padding:12px 12px 10px;border:3px solid #e8c98e;border-radius:23px;background:linear-gradient(145deg,#fff,#fff5fa);box-shadow:0 8px 22px #b81d6320}
+.scb-qr-paper{padding:10px;border:1px solid #f0c5d9;border-radius:14px;background:#fff}
+.scb-qr-image{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:4px}
+.scb-ribbon{position:absolute;top:-19px;right:-13px;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f05a9f,#d91c76);border:3px solid #fff;color:#fff;font-size:24px;box-shadow:0 4px 12px #a91b5b35}
+.scb-frame-caption{display:block;padding-top:8px;color:#a66b86;font-size:9px;font-weight:800;letter-spacing:2px}
+.scb-company{margin:18px 0 5px;color:#70213f;font-size:18px;font-weight:850}
+.scb-hint{max-width:390px;margin:0 auto 15px;color:#98788a;font-size:11px;line-height:1.7}
+.scb-save-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:12px 22px;border:0;border-radius:999px;background:linear-gradient(100deg,#c7196c,#f04b99);color:#fff;font-size:14px;font-weight:800;box-shadow:0 7px 17px #d81b7333;transition:transform .15s,box-shadow .15s}
+.scb-save-button:hover{transform:translateY(-2px);box-shadow:0 10px 22px #d81b7340}
+.scb-thanks{margin:15px 0 0;color:#b16a8b;font-size:12px}.scb-thanks span{color:#e84b98}
+.scb-decor{position:absolute;color:#fff9;pointer-events:none;text-shadow:0 3px 8px #a91b5b20}.scb-heart-one{left:5%;top:12%;font-size:38px;transform:rotate(-14deg)}.scb-heart-two{right:6%;bottom:12%;font-size:50px;transform:rotate(13deg)}.scb-sparkle-one{right:13%;top:13%;font-size:32px}.scb-sparkle-two{left:12%;bottom:16%;font-size:28px}
+@media(max-width:650px){.scb-payment{margin:24px -2px 8px;padding:22px 12px;border-radius:20px}.scb-payment-inner{padding:22px 14px 18px;border-radius:19px}.scb-qr-frame{width:min(100%,290px);padding:9px}.scb-qr-paper{padding:7px}.scb-company{font-size:16px}.scb-decor{opacity:.8}}
