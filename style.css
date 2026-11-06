@@ -132,3 +132,116 @@ footer strong,footer p,footer small{color:#fff}
 .scb-thanks{margin:15px 0 0;color:#b16a8b;font-size:12px}.scb-thanks span{color:#e84b98}
 .scb-decor{position:absolute;color:#fff9;pointer-events:none;text-shadow:0 3px 8px #a91b5b20}.scb-heart-one{left:5%;top:12%;font-size:38px;transform:rotate(-14deg)}.scb-heart-two{right:6%;bottom:12%;font-size:50px;transform:rotate(13deg)}.scb-sparkle-one{right:13%;top:13%;font-size:32px}.scb-sparkle-two{left:12%;bottom:16%;font-size:28px}
 @media(max-width:650px){.scb-payment{margin:24px -2px 8px;padding:22px 12px;border-radius:20px}.scb-payment-inner{padding:22px 14px 18px;border-radius:19px}.scb-qr-frame{width:min(100%,290px);padding:9px}.scb-qr-paper{padding:7px}.scb-company{font-size:16px}.scb-decor{opacity:.8}}
+
+/* Pink Shopping - Payment Method */
+.payment-method-box {
+  margin: 22px 0;
+  padding: 18px;
+  border: 1px solid #f3c5da;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff7fb, #fff);
+}
+
+.payment-method-box h3 {
+  margin: 0 0 14px;
+  color: #a7195b;
+  font-size: 19px;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1.5px solid #f1c9dc;
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.payment-option:has(input:checked) {
+  border-color: #d81b73;
+  background: #fff0f7;
+  box-shadow: 0 4px 14px #d81b7318;
+}
+
+.payment-option input {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: #d81b73;
+}
+
+.payment-icon {
+  font-size: 27px;
+}
+
+.payment-option-text {
+  display: grid;
+  gap: 4px;
+}
+
+.payment-option-text strong {
+  color: #8e2453;
+  font-size: 14px;
+}
+
+.payment-option-text small {
+  color: #98788a;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.payment-slip-box {
+  margin: 18px 0;
+  padding: 16px;
+  border: 1px dashed #e78ab6;
+  border-radius: 14px;
+  background: #fff5fa;
+}
+
+.payment-slip-box label {
+  display: block;
+  margin-bottom: 8px;
+  color: #a7195b;
+}
+
+.payment-slip-box small {
+  display: block;
+  color: #98788a;
+  font-size: 12px;
+}
+
+.payment-cod-note {
+  margin: 16px 0;
+  padding: 15px;
+  border-radius: 12px;
+  background: #fff0f7;
+  border: 1px solid #f3c5da;
+  color: #a7195b;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+#qr-payment[hidden],
+#cod-note[hidden] {
+  display: none !important;
+}
+
+@media(max-width:650px) {
+  .payment-method-box {
+    padding: 14px;
+  }
+
+  .payment-option {
+    padding: 13px 10px;
+  }
+
+  .payment-option-text strong {
+    font-size: 13px;
+  }
+}
+ 
