@@ -1,1 +1,48 @@
-<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>คำสั่งซื้อของฉัน | PINK SHOP</title><link rel="stylesheet" href="style.css"><style>body{background:#fff5f9}.orders-wrap{max-width:740px;margin:28px auto;padding:0 15px}.orders-card{background:white;border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 4px 18px #e8bed033}.orders-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.orders-row strong{color:#ba1763}.orders-item{padding:10px 0;border-bottom:1px solid #f4e3ec}.orders-muted{color:#77596a}.orders-success{text-align:center;font-size:1.5rem;color:#b51868}.orders-nav{display:flex;gap:10px;flex-wrap:wrap}.orders-nav a{background:#d81b73;color:white;text-decoration:none;padding:12px 16px;border-radius:10px}.orders-total{font-size:1.2rem;font-weight:bold;color:#b51868}.orders-card p{overflow-wrap:anywhere}</style></head><body><div class="topline">PINK SHOPPING | BEAUTY & COSMETICS</div><main class="orders-wrap"><h1>📦 คำสั่งซื้อของฉัน</h1><div class="orders-nav"><a href="index.html">← กลับไปเลือกซื้อสินค้า</a></div><p class="orders-muted">ประวัติบนเบราว์เซอร์หรือแอปนี้เท่านั้น หากเปลี่ยนเครื่อง ล้างข้อมูลเว็บไซต์ หรือใช้โหมดไม่ระบุตัวตน ประวัติอาจไม่ปรากฏ โปรดเก็บเลขคำสั่งซื้อไว้</p><div id="orders"></div></main><script type="module" src="my-orders.js"></script></body></html>
+
+<script type="module">
+import {db} from './common.js';
+
+const root=document.getElementById('orders');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const baht=n=>Number(n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+let orders=[];
+try{
+ const saved=JSON.parse(localStorage.getItem('pink_guest_orders_v1')||'[]');
+ if(Array.isArray(saved))orders=saved;
+}catch(e){}
+
+try{
+ const latest=JSON.parse(sessionStorage.getItem('pink_guest_latest_order')||'null');
+ if(latest&&!orders.some(o=>String(o.id)===String(latest.id)))orders.unshift(latest);
+}catch(e){}
+
+const focus=new URLSearchParams(location.search).get('order');
+
+if(!orders.length){
+ root.innerHTML='<section class="orders-card"><p>ยังไม่มีประวัติคำสั่งซื้อในอุปกรณ์นี้</p></section>';
+}else{
+ root.innerHTML=orders.map(o=>{
+ const total=(o.items||[]).reduce((a,i)=>a+Number(i.price||0)*Number(i.quantity||0),0);
+ const isCOD=o.paymentMethod==='cod';
+ const payment=isCOD?'เก็บเงินปลายทาง (COD)':'โอนเงินผ่าน QR';
+ const payStatus=isCOD?'รอชำระเงินปลายทาง':'รอตรวจสอบสลิป';
+ return `<section class="orders-card" ${String(o.id)===focus?'style="border:2px solid #d81b73"':''}>
+ ${String(o.id)===focus?'<div class="orders-success">✓ สั่งซื้อสำเร็จ!</div>':''}
+ <div class="orders-row"><h2>คำสั่งซื้อ #${esc(o.id)}</h2><strong>${esc(o.status||'รอร้านยืนยัน')}</strong></div>
+ <p class="orders-muted">วันที่ ${esc(new Date(o.date).toLocaleString('th-TH'))}</p>
+ <h3>รายการสินค้า</h3>
+ ${(o.items||[]).map(i=>`<div class="orders-item"><div class="orders-row"><span>${esc(i.name)} ${i.option?'<small>('+esc(i.option)+')</small>':''} × ${esc(i.quantity)}</span><b>฿${baht(Number(i.price)*Number(i.quantity))}</b></div></div>`).join('')}
+ <p class="orders-row orders-total"><span>ยอดรวมสินค้า</span><span>฿${baht(total)}</span></p>
+ <h3>💳 ข้อมูลการชำระเงิน</h3>
+ <p class="orders-row"><span>วิธีชำระเงิน</span><strong>${payment}</strong></p>
+ <p class="orders-row"><span>สถานะชำระเงิน</span><strong>${payStatus}</strong></p>
+ <p class="orders-muted">ค่าจัดส่งและยอดชำระสุดท้ายร้านค้าจะแจ้งยืนยันอีกครั้ง</p>
+ <h3>📦 ข้อมูลจัดส่ง</h3>
+ <p>${esc(o.customer)} | ${esc(o.phone)}</p>
+ <p>${esc(o.address)}</p>
+ <p class="orders-muted">สถานะนี้เป็นข้อมูล ณ เวลาสั่งซื้อ ไม่ใช่การติดตามสถานะล่าสุดจากร้าน</p>
+ </section>`;
+ }).join('');
+}
+</script>
