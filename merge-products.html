@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รวมสินค้า | PINK SHOPPING</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:18px;background:#fff5fa;color:#54283d;font-family:Arial,sans-serif}
+.wrap{max-width:850px;margin:auto}
+h2{color:#c04482;margin-bottom:6px}
+p{line-height:1.6}
+.panel{background:white;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 3px 14px #e8cbd9}
+input[type=search]{width:100%;padding:13px;border:1px solid #e5b8ce;border-radius:10px;font-size:16px}
+.item{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid #f3e3eb}
+.item:last-child{border:0}
+.item input{width:20px;height:20px;flex-shrink:0;accent-color:#d34c91}
+.details{min-width:0;flex:1}
+.name{font-weight:bold;overflow-wrap:anywhere}
+.meta{font-size:13px;color:#886779;margin-top:5px}
+.tag{font-size:12px;color:#a33c73}
+button{border:0;border-radius:10px;padding:13px 18px;background:#d34c91;color:white;font-size:16px;font-weight:bold;width:100%;margin-top:12px}
+button:disabled{opacity:.5}
+#message{padding:10px;border-radius:9px;white-space:pre-wrap}
+.small{font-size:13px;color:#886779}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2>🌸 รวมสินค้าเป็นตัวเลือก</h2>
+  <p>เลือกสินค้ารุ่นเดียวกัน เช่น สี เบอร์ หรือสูตรต่าง ๆ เพื่อรวมไว้ในการ์ดสินค้าเดียวกัน</p>
+
+  <div class="panel">
+    <b>1. ค้นหาสินค้า</b>
+    <p class="small">พิมพ์ชื่อสินค้าเพื่อค้นหาในรายการ</p>
+    <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า...">
+  </div>
+
+  <div class="panel">
+    <b>2. เลือกสินค้าหลัก</b>
+    <p class="small">สินค้าหลักจะเป็นชื่อที่แสดงในการ์ดหน้าร้าน</p>
+    <div id="parents">กำลังโหลดสินค้า...</div>
+  </div>
+
+  <div class="panel">
+    <b>3. เลือกสินค้ารุ่นเดียวกันที่จะรวม</b>
+    <p class="small">ติ๊กเฉพาะสินค้าที่เป็นรุ่นเดียวกันกับสินค้าหลักเท่านั้น</p>
+    <div id="sources">กำลังโหลดสินค้า...</div>
+  </div>
+
+  <div class="panel">
+    <b>4. ตรวจสอบและยืนยัน</b>
+    <p id="summary">ยังไม่ได้เลือกสินค้า</p>
+    <button id="merge" disabled>รวมสินค้าที่เลือก</button>
+    <div id="message"></div>
+  </div>
+</div>
+
+<script type="module">
+import { db, money, esc, session } from './common.js';
+
+const parentsEl = document.getElementById('parents');
+const sourcesEl = document.getElementById('sources');
+const searchEl = document.getElementById('search');
+const summaryEl = document.getElementById('summary');
+const mergeBtn = document.getElementById('merge');
+const messageEl = document.getElementById('message');
+
+let products = [];
+let parentId = null;
+let sourceIds = new Set();
+
+function say(text, bad=false) {
+  messageEl.textContent = text;
+  messageEl.style.color = bad ? '#b91c1c' : '#18734a';
+  messageEl.style.background = bad ? '#fff0f0' : '#effaf3';
+}
+
+function productName(p) {
+  return p.name || p.title || ('สินค้า #' + p.id);
+}
+
+function productInfo(p) {
+  const price = Number(p.price || 0);
+  const stock = Number(p.stock || 0);
+  const status = p.is_active === false ? 'ปิดใช้งาน' : 'ใช้งานอยู่';
+  return `ราคา ${money(price)} บาท · สต็อก ${stock} · ${status} · ID ${p.id}`;
+}
+
+function filteredProducts() {
+  const q = searchEl.value.trim().toLowerCase();
+  return products.filter(p =>
+    productName(p).toLowerCase().includes(q) ||
+    String(p.id).includes(q)
+  );
+}
+
+function render() {
+  const list = filteredProducts();
+
+  parentsEl.innerHTML = '';
+  sourcesEl.innerHTML = '';
+
+  if (!list.length) {
+    parentsEl.textContent = 'ไม่พบสินค้า';
+    sourcesEl.textContent = 'ไม่พบสินค้า';
+  }
+
+  list.forEach(p => {
+    const row = document.createElement('label');
+    row.className = 'item';
+    row.innerHTML = `
+      <input type="radio" name="parent" value="${p.id}"
+        ${String(parentId) === String(p.id) ? 'checked' : ''}>
+      <div class="details">
+        <div class="name">${esc(productName(p))}</div>
+        <div class="meta">${esc(productInfo(p))}</div>
+      </div>`;
+    row.querySelector('input').addEventListener('change', () => {
+      parentId = String(p.id);
+      sourceIds.delete(parentId);
+      render();
+    });
+    parentsEl.appendChild(row);
+  });
+
+  list.forEach(p => {
+    if (String(p.id) === String(parentId)) return;
+
+    const row = document.createElement('label');
+    row.className = 'item';
+    row.innerHTML = `
+      <input type="checkbox" value="${p.id}"
+        ${sourceIds.has(String(p.id)) ? 'checked' : ''}>
+      <div class="details">
+        <div class="name">${esc(productName(p))}</div>
+        <div class="meta">${esc(productInfo(p))}</div>
+      </div>`;
+    row.querySelector('input').addEventListener('change', e => {
+      const id = String(p.id);
+      if (e.target.checked) sourceIds.add(id);
+      else sourceIds.delete(id);
+      updateSummary();
+    });
+    sourcesEl.appendChild(row);
+  });
+
+  updateSummary();
+}
+
+function updateSummary() {
+  const parent = products.find(p => String(p.id) === String(parentId));
+  const selected = products.filter(p => sourceIds.has(String(p.id)));
+
+  summaryEl.textContent = parent
+    ? `สินค้าหลัก: ${productName(parent)}\nรายการที่จะรวม: ${selected.length} รายการ\n${selected.map(p => '• ' + productName(p)).join('\n')}`
+    : 'กรุณาเลือกสินค้าหลักก่อน';
+
+  mergeBtn.disabled = !parent || selected.length === 0;
+}
+
+async function loadProducts() {
+  say('กำลังโหลดรายการสินค้า...');
+  const { data, error } = await db
+    .from('products')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (error) throw error;
+
+  products = data || [];
+  render();
+  say(`โหลดสินค้าแล้ว ${products.length} รายการ`);
+}
+
+async function start() {
+  const user = await session();
+  if (!user) {
+    say('กรุณาเข้าสู่ระบบผู้ดูแลร้านก่อนใช้งาน', true);
+    parentsEl.textContent = '';
+    sourcesEl.textContent = '';
+    return;
+  }
+
+  const { data: admin, error } = await db
+    .from('admins')
+    .select('user_id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error || !admin) {
+    say('บัญชีนี้ไม่มีสิทธิ์เข้าหน้ารวมสินค้า', true);
+    parentsEl.textContent = '';
+    sourcesEl.textContent = '';
+    return;
+  }
+
+  await loadProducts();
+}
+
+searchEl.addEventListener('input', render);
+
+mergeBtn.addEventListener('click', async () => {
+  const parent = products.find(p => String(p.id) === String(parentId));
+  const selected = [...sourceIds];
+
+  if (!parent || !selected.length) return;
+
+  const names = products
+    .filter(p => selected.includes(String(p.id)))
+    .map(productName);
+
+  const confirmText =
+    `ยืนยันรวมสินค้าเหล่านี้เข้ากับ "${productName(parent)}" หรือไม่?\n\n` +
+    names.map(n => '• ' + n).join('\n') +
+    '\n\nรายการต้นทางจะถูกซ่อนจากหน้าร้าน แต่ไม่ลบข้อมูลเดิม';
+
+  if (!confirm(confirmText)) return;
+
+  mergeBtn.disabled = true;
+  say('กำลังดำเนินการ...');
+
+  try {
+    const { data, error } = await db.rpc(
+      'merge_products_into_variants',
+      {
+        p_parent_product_id: Number(parentId),
+        p_source_product_ids: selected.map(Number)
+      }
+    );
+
+    if (error) throw error;
+
+    sourceIds.clear();
+    parentId = null;
+    await loadProducts();
+    say(`รวมสินค้าเรียบร้อย ${data} รายการ`);
+  } catch (err) {
+    say('รวมสินค้าไม่สำเร็จ: ' + (err.message || 'เกิดข้อผิดพลาด'), true);
+  } finally {
+    updateSummary();
+  }
+});
+
+start().catch(err => say('เปิดหน้าจัดการไม่สำเร็จ: ' + err.message, true));
+</script>
+</body>
+</html>
