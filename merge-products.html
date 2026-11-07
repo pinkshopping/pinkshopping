@@ -4,55 +4,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>รวมสินค้า | PINK SHOPPING</title>
+<title>จัดกลุ่มสินค้าอัตโนมัติ | PINK SHOPPING</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:18px;background:#fff5fa;color:#54283d;font-family:Arial,sans-serif}
+body{margin:0;padding:16px;background:#fff5fa;color:#54283d;font-family:Arial,sans-serif}
 .wrap{max-width:850px;margin:auto}
 h2{color:#c04482;margin-bottom:6px}
 p{line-height:1.6}
-.panel{background:white;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 3px 14px #e8cbd9}
+.panel,.group{background:white;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 3px 14px #e8cbd9}
 input[type=search]{width:100%;padding:13px;border:1px solid #e5b8ce;border-radius:10px;font-size:16px}
-.item{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid #f3e3eb}
+.group{border:1px solid #edc8da}
+.group-head{display:flex;gap:10px;align-items:center}
+.group-head input{width:21px;height:21px;accent-color:#d34c91}
+.group-title{font-weight:bold;color:#bd3f80}
+.item{padding:11px 4px;border-bottom:1px solid #f3e3eb}
 .item:last-child{border:0}
-.item input{width:20px;height:20px;flex-shrink:0;accent-color:#d34c91}
-.details{min-width:0;flex:1}
 .name{font-weight:bold;overflow-wrap:anywhere}
 .meta{font-size:13px;color:#886779;margin-top:5px}
-.tag{font-size:12px;color:#a33c73}
+.parent-select{width:100%;padding:11px;margin:10px 0;border:1px solid #e5b8ce;border-radius:9px;background:white;font-size:15px;color:#54283d}
 button{border:0;border-radius:10px;padding:13px 18px;background:#d34c91;color:white;font-size:16px;font-weight:bold;width:100%;margin-top:12px}
 button:disabled{opacity:.5}
-#message{padding:10px;border-radius:9px;white-space:pre-wrap}
+#message{padding:10px;border-radius:9px;white-space:pre-wrap;margin-top:10px}
 .small{font-size:13px;color:#886779}
+.tag{display:inline-block;background:#fff0f7;color:#a33c73;border-radius:20px;padding:4px 9px;font-size:12px;margin:3px 0}
+.empty{padding:16px;text-align:center;color:#886779}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h2>🌸 รวมสินค้าเป็นตัวเลือก</h2>
-  <p>เลือกสินค้ารุ่นเดียวกัน เช่น สี เบอร์ หรือสูตรต่าง ๆ เพื่อรวมไว้ในการ์ดสินค้าเดียวกัน</p>
+  <h2>🌸 จัดกลุ่มสินค้าอัตโนมัติ</h2>
+  <p>ระบบช่วยค้นหาสินค้าที่น่าจะเป็นรุ่นเดียวกัน เช่น สี เบอร์ สูตร และขนาด เพื่อรวมเป็นการ์ดสินค้าเดียวกัน</p>
 
   <div class="panel">
-    <b>1. ค้นหาสินค้า</b>
-    <p class="small">พิมพ์ชื่อสินค้าเพื่อค้นหาในรายการ</p>
-    <input id="search" type="search" placeholder="ค้นหาชื่อสินค้า...">
+    <b>ค้นหาสินค้า</b>
+    <p class="small">ค้นหาจากชื่อสินค้า หรือรหัส ID</p>
+    <input id="search" type="search" placeholder="พิมพ์ชื่อสินค้า...">
+    <p id="count" class="small">กำลังตรวจสอบสินค้า...</p>
   </div>
 
   <div class="panel">
-    <b>2. เลือกสินค้าหลัก</b>
-    <p class="small">สินค้าหลักจะเป็นชื่อที่แสดงในการ์ดหน้าร้าน</p>
-    <div id="parents">กำลังโหลดสินค้า...</div>
+    <b>กลุ่มสินค้าที่ระบบแนะนำ</b>
+    <p class="small">ติ๊กเลือกกลุ่มที่ต้องการรวม ตรวจสอบชื่อสินค้าและเลือกสินค้าหลักก่อนยืนยัน</p>
+    <div id="groups"><div class="empty">กำลังจัดกลุ่มสินค้า...</div></div>
   </div>
 
   <div class="panel">
-    <b>3. เลือกสินค้ารุ่นเดียวกันที่จะรวม</b>
-    <p class="small">ติ๊กเฉพาะสินค้าที่เป็นรุ่นเดียวกันกับสินค้าหลักเท่านั้น</p>
-    <div id="sources">กำลังโหลดสินค้า...</div>
-  </div>
-
-  <div class="panel">
-    <b>4. ตรวจสอบและยืนยัน</b>
-    <p id="summary">ยังไม่ได้เลือกสินค้า</p>
-    <button id="merge" disabled>รวมสินค้าที่เลือก</button>
+    <b>ตรวจสอบก่อนรวม</b>
+    <p id="summary" class="small">ยังไม่ได้เลือกกลุ่มสินค้า</p>
+    <button id="merge" disabled>ยืนยันรวมกลุ่มที่เลือก</button>
     <div id="message"></div>
   </div>
 </div>
@@ -60,16 +59,17 @@ button:disabled{opacity:.5}
 <script type="module">
 import { db, money, esc, session } from './common.js';
 
-const parentsEl = document.getElementById('parents');
-const sourcesEl = document.getElementById('sources');
+const groupsEl = document.getElementById('groups');
 const searchEl = document.getElementById('search');
+const countEl = document.getElementById('count');
 const summaryEl = document.getElementById('summary');
 const mergeBtn = document.getElementById('merge');
 const messageEl = document.getElementById('message');
 
 let products = [];
-let parentId = null;
-let sourceIds = new Set();
+let suggestions = [];
+let selectedGroups = new Set();
+let busy = false;
 
 function say(text, bad=false) {
   messageEl.textContent = text;
@@ -82,86 +82,163 @@ function productName(p) {
 }
 
 function productInfo(p) {
-  const price = Number(p.price || 0);
-  const stock = Number(p.stock || 0);
-  const status = p.is_active === false ? 'ปิดใช้งาน' : 'ใช้งานอยู่';
-  return `ราคา ${money(price)} บาท · สต็อก ${stock} · ${status} · ID ${p.id}`;
+  return `ราคา ${money(Number(p.price || 0))} บาท · สต็อก ${Number(p.stock || 0)} · ID ${p.id}`;
 }
 
-function filteredProducts() {
+/* คำที่มักเป็นตัวเลือกสินค้า ไม่ใช่ชื่อรุ่น */
+const variantWords = [
+  'สีขาว','สีเขียว','สีชมพู','สีฟ้า','สีม่วง','สีแดง','สีส้ม',
+  'สีดำ','สีทอง','สีเงิน','ขาว','เขียว','ชมพู','ฟ้า','ม่วง',
+  'แดง','ส้ม','ดำ','ทอง','เงิน',
+  'white','green','pink','blue','purple','red','orange','black',
+  'เบอร์','เฉด','สูตร','กลิ่น','สี','shade','color','colour',
+  'เบอร์01','เบอร์02','เบอร์03'
+];
+
+function normalizeName(name) {
+  let s = String(name || '').toLowerCase();
+
+  // ลบข้อความในวงเล็บ
+  s = s.replace(/\([^)]*\)|\[[^\]]*\]/g, ' ');
+
+  // ลบขนาดและน้ำหนัก เช่น 5g, 15 ml, 100 มล.
+  s = s.replace(/\b\d+(?:\.\d+)?\s*(?:g|kg|mg|ml|l|oz)\b/gi, ' ');
+  s = s.replace(/\b\d+(?:\.\d+)?\s*(?:กรัม|กิโลกรัม|มิลลิกรัม|มล|ลิตร)\b/gi, ' ');
+
+  // ลบเบอร์และรหัสเฉด เช่น เบอร์ 01, #02
+  s = s.replace(/เบอร์\s*\d+/g, ' ');
+  s = s.replace(/#\s*\d+/g, ' ');
+  s = s.replace(/\b(?:no|number)\.?\s*\d+\b/g, ' ');
+
+  // ลบคำบอกสี/สูตร/กลิ่นที่พบบ่อย
+  for (const word of variantWords) {
+    s = s.replace(new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), ' ');
+  }
+
+  // ลบตัวเลขที่อยู่เดี่ยว ๆ ซึ่งมักเป็นขนาดหรือเบอร์
+  s = s.replace(/\b\d+(?:\.\d+)?\b/g, ' ');
+
+  // ลบเครื่องหมายและช่องว่างส่วนเกิน
+  return s.replace(/[|,;:–—_-]/g, ' ')
+          .replace(/[^\p{L}\p{N} ]/gu, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+}
+
+/* จัดกลุ่มจากชื่อพื้นฐานที่ตรงกันหลังตัดคำบอกตัวเลือก */
+function buildSuggestions(list) {
+  const map = new Map();
+
+  for (const p of list) {
+    const key = normalizeName(productName(p));
+
+    // ถ้าชื่อเหลือสั้นเกินไป จะไม่เดากลุ่มให้
+    if (!key || key.replace(/\s/g, '').length < 5) continue;
+
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(p);
+  }
+
+  return [...map.entries()]
+    .filter(([key, items]) => items.length >= 2)
+    .map(([key, items]) => ({
+      key,
+      items: items.sort((a,b) => Number(a.id)-Number(b.id)),
+      parentId: String(
+        [...items].sort((a,b) =>
+          Number(b.stock || 0)-Number(a.stock || 0) ||
+          Number(a.id)-Number(b.id)
+        )[0].id
+      )
+    }));
+}
+
+function filteredGroups() {
   const q = searchEl.value.trim().toLowerCase();
-  return products.filter(p =>
-    productName(p).toLowerCase().includes(q) ||
-    String(p.id).includes(q)
+
+  return suggestions.filter(g =>
+    !q ||
+    g.items.some(p =>
+      productName(p).toLowerCase().includes(q) ||
+      String(p.id).includes(q)
+    )
   );
 }
 
 function render() {
-  const list = filteredProducts();
+  const visible = filteredGroups();
+  groupsEl.innerHTML = '';
 
-  parentsEl.innerHTML = '';
-  sourcesEl.innerHTML = '';
-
-  if (!list.length) {
-    parentsEl.textContent = 'ไม่พบสินค้า';
-    sourcesEl.textContent = 'ไม่พบสินค้า';
+  if (!visible.length) {
+    groupsEl.innerHTML = '<div class="empty">ยังไม่พบกลุ่มสินค้าที่ชื่อใกล้เคียงกันค่ะ<br><span class="small">สินค้าที่ยังไม่พบคู่จะไม่ถูกรวมเอง</span></div>';
   }
 
-  list.forEach(p => {
-    const row = document.createElement('label');
-    row.className = 'item';
-    row.innerHTML = `
-      <input type="radio" name="parent" value="${p.id}"
-        ${String(parentId) === String(p.id) ? 'checked' : ''}>
-      <div class="details">
-        <div class="name">${esc(productName(p))}</div>
-        <div class="meta">${esc(productInfo(p))}</div>
-      </div>`;
-    row.querySelector('input').addEventListener('change', () => {
-      parentId = String(p.id);
-      sourceIds.delete(parentId);
-      render();
-    });
-    parentsEl.appendChild(row);
-  });
+  visible.forEach((g) => {
+    const index = suggestions.indexOf(g);
+    const box = document.createElement('div');
+    box.className = 'group';
 
-  list.forEach(p => {
-    if (String(p.id) === String(parentId)) return;
+    const checked = selectedGroups.has(index);
+    const options = g.items.map(p =>
+      `<option value="${p.id}" ${String(p.id)===g.parentId?'selected':''}>${esc(productName(p))} (ID ${p.id})</option>`
+    ).join('');
 
-    const row = document.createElement('label');
-    row.className = 'item';
-    row.innerHTML = `
-      <input type="checkbox" value="${p.id}"
-        ${sourceIds.has(String(p.id)) ? 'checked' : ''}>
-      <div class="details">
-        <div class="name">${esc(productName(p))}</div>
-        <div class="meta">${esc(productInfo(p))}</div>
-      </div>`;
-    row.querySelector('input').addEventListener('change', e => {
-      const id = String(p.id);
-      if (e.target.checked) sourceIds.add(id);
-      else sourceIds.delete(id);
+    box.innerHTML = `
+      <div class="group-head">
+        <input type="checkbox" class="group-check" ${checked?'checked':''}>
+        <div>
+          <div class="group-title">กลุ่มสินค้าที่คล้ายกัน ${g.items.length} รายการ</div>
+          <span class="tag">ระบบแนะนำจากชื่อสินค้า</span>
+        </div>
+      </div>
+      <div class="group-products">
+        ${g.items.map(p => `
+          <div class="item">
+            <div class="name">${esc(productName(p))}</div>
+            <div class="meta">${esc(productInfo(p))}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="small"><b>เลือกสินค้าหลักที่จะแสดงหน้าร้าน</b></div>
+      <select class="parent-select">${options}</select>
+    `;
+
+    box.querySelector('.group-check').addEventListener('change', e => {
+      if (e.target.checked) selectedGroups.add(index);
+      else selectedGroups.delete(index);
       updateSummary();
     });
-    sourcesEl.appendChild(row);
+
+    box.querySelector('.parent-select').addEventListener('change', e => {
+      g.parentId = e.target.value;
+      updateSummary();
+    });
+
+    groupsEl.appendChild(box);
   });
+
+  countEl.textContent =
+    `พบสินค้าใช้งานอยู่ ${products.length} รายการ · แนะนำ ${suggestions.length} กลุ่ม`;
 
   updateSummary();
 }
 
 function updateSummary() {
-  const parent = products.find(p => String(p.id) === String(parentId));
-  const selected = products.filter(p => sourceIds.has(String(p.id)));
+  const chosen = [...selectedGroups]
+    .map(i => suggestions[i])
+    .filter(Boolean);
 
-  summaryEl.textContent = parent
-    ? `สินค้าหลัก: ${productName(parent)}\nรายการที่จะรวม: ${selected.length} รายการ\n${selected.map(p => '• ' + productName(p)).join('\n')}`
-    : 'กรุณาเลือกสินค้าหลักก่อน';
+  const total = chosen.reduce((sum,g) => sum + g.items.length - 1, 0);
 
-  mergeBtn.disabled = !parent || selected.length === 0;
+  summaryEl.textContent = chosen.length
+    ? `เลือก ${chosen.length} กลุ่ม · จะนำสินค้า ${total} รายการไปรวมเป็นตัวเลือกของสินค้าหลัก`
+    : 'ยังไม่ได้เลือกกลุ่มสินค้า';
+
+  mergeBtn.disabled = busy || chosen.length === 0;
 }
 
 async function loadProducts() {
-  say('กำลังโหลดรายการสินค้า...');
+  say('กำลังโหลดสินค้า...');
   const { data, error } = await db
     .from('products')
     .select('*')
@@ -169,17 +246,21 @@ async function loadProducts() {
 
   if (error) throw error;
 
-  products = data || [];
+  // ไม่แสดงสินค้าที่ถูกซ่อนจากหน้าร้านแล้ว
+  products = (data || []).filter(p => p.is_active !== false);
+  suggestions = buildSuggestions(products);
+  selectedGroups.clear();
+
   render();
-  say(`โหลดสินค้าแล้ว ${products.length} รายการ`);
+  say('จัดกลุ่มสินค้าเบื้องต้นเรียบร้อย กรุณาตรวจสอบก่อนยืนยันค่ะ');
 }
 
 async function start() {
   const user = await session();
+
   if (!user) {
     say('กรุณาเข้าสู่ระบบผู้ดูแลร้านก่อนใช้งาน', true);
-    parentsEl.textContent = '';
-    sourcesEl.textContent = '';
+    groupsEl.textContent = '';
     return;
   }
 
@@ -190,9 +271,8 @@ async function start() {
     .maybeSingle();
 
   if (error || !admin) {
-    say('บัญชีนี้ไม่มีสิทธิ์เข้าหน้ารวมสินค้า', true);
-    parentsEl.textContent = '';
-    sourcesEl.textContent = '';
+    say('บัญชีนี้ไม่มีสิทธิ์เข้าหน้าจัดกลุ่มสินค้า', true);
+    groupsEl.textContent = '';
     return;
   }
 
@@ -202,48 +282,83 @@ async function start() {
 searchEl.addEventListener('input', render);
 
 mergeBtn.addEventListener('click', async () => {
-  const parent = products.find(p => String(p.id) === String(parentId));
-  const selected = [...sourceIds];
+  if (busy) return;
 
-  if (!parent || !selected.length) return;
+  const chosen = [...selectedGroups]
+    .map(i => suggestions[i])
+    .filter(Boolean);
 
-  const names = products
-    .filter(p => selected.includes(String(p.id)))
-    .map(productName);
+  if (!chosen.length) return;
 
-  const confirmText =
-    `ยืนยันรวมสินค้าเหล่านี้เข้ากับ "${productName(parent)}" หรือไม่?\n\n` +
-    names.map(n => '• ' + n).join('\n') +
-    '\n\nรายการต้นทางจะถูกซ่อนจากหน้าร้าน แต่ไม่ลบข้อมูลเดิม';
+  // ตรวจว่ากลุ่มไม่มีสินค้าซ้ำกัน
+  const used = new Set();
+  for (const g of chosen) {
+    for (const p of g.items) {
+      if (used.has(String(p.id))) {
+        say('พบสินค้าซ้ำอยู่ในหลายกลุ่ม กรุณาตรวจสอบก่อนค่ะ', true);
+        return;
+      }
+      used.add(String(p.id));
+    }
+  }
 
-  if (!confirm(confirmText)) return;
+  const description = chosen.map((g, i) => {
+    const parent = g.items.find(p => String(p.id) === String(g.parentId));
+    const sources = g.items.filter(p => String(p.id) !== String(g.parentId));
+    return `${i+1}. สินค้าหลัก: ${productName(parent)}\n` +
+      sources.map(p => `   + ${productName(p)}`).join('\n');
+  }).join('\n\n');
 
+  const ok = confirm(
+    'โปรดตรวจสอบรายการก่อนรวม\n\n' +
+    description +
+    '\n\nสินค้าต้นทางจะถูกซ่อนจากหน้าร้าน แต่ไม่ลบข้อมูลเดิม\nยืนยันดำเนินการหรือไม่?'
+  );
+
+  if (!ok) return;
+
+  busy = true;
   mergeBtn.disabled = true;
-  say('กำลังดำเนินการ...');
+  say('กำลังรวมสินค้า กรุณาอย่าปิดหน้านี้...');
+
+  let completed = 0;
 
   try {
-    const { data, error } = await db.rpc(
-      'merge_products_into_variants',
-      {
-        p_parent_product_id: Number(parentId),
-        p_source_product_ids: selected.map(Number)
-      }
-    );
+    for (const g of chosen) {
+      const sourceIds = g.items
+        .filter(p => String(p.id) !== String(g.parentId))
+        .map(p => Number(p.id));
 
-    if (error) throw error;
+      if (!sourceIds.length) continue;
 
-    sourceIds.clear();
-    parentId = null;
+      const { error } = await db.rpc('merge_products_into_variants', {
+        p_parent_product_id: Number(g.parentId),
+        p_source_product_ids: sourceIds
+      });
+
+      if (error) throw error;
+      completed++;
+    }
+
+    selectedGroups.clear();
     await loadProducts();
-    say(`รวมสินค้าเรียบร้อย ${data} รายการ`);
+    say(`ดำเนินการสำเร็จ ${completed} กลุ่มค่ะ`);
   } catch (err) {
-    say('รวมสินค้าไม่สำเร็จ: ' + (err.message || 'เกิดข้อผิดพลาด'), true);
+    say(
+      `ดำเนินการสำเร็จแล้ว ${completed} กลุ่ม\n` +
+      `กลุ่มที่เหลือยังไม่ได้ยืนยัน: ${err.message || 'เกิดข้อผิดพลาด'}\n` +
+      'กรุณาตรวจสอบรายการที่รวมไปแล้วก่อนกดซ้ำค่ะ',
+      true
+    );
   } finally {
+    busy = false;
     updateSummary();
   }
 });
 
-start().catch(err => say('เปิดหน้าจัดการไม่สำเร็จ: ' + err.message, true));
+start().catch(err =>
+  say('เปิดหน้าจัดการไม่สำเร็จ: ' + (err.message || 'เกิดข้อผิดพลาด'), true)
+);
 </script>
 </body>
 </html>
