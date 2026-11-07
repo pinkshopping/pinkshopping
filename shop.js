@@ -2,7 +2,7 @@ import {db,money,esc,msg,session} from './common.js';
 
 let products=[],variants=[],cart={},activeCategory='ทั้งหมด',currentProduct=null,selection={},soldCounts={};
 const $=id=>document.getElementById(id);
-const fields=[['color','ตัวเลือกสินค้า'],['size','ขนาด'],['formula','กลิ่น / สูตร'],['pack','จำนวนต่อแพ็ก']];
+const fields=[['color','สี / เบอร์'],['size','ขนาด'],['formula','กลิ่น / สูตร'],['pack','จำนวนต่อแพ็ก']];
 const variantsOf=id=>variants.filter(v=>Number(v.product_id)===Number(id)&&v.active);
 const keyOf=(id,vid)=>id+'|'+(vid||'');
 
@@ -110,7 +110,7 @@ function productCard(p){
       <p class="price">${has?'<small>เริ่มต้น</small> ':''}฿${money(lowest)}</p>
       <div class="product-meta"><span>${available>0?'พร้อมขาย':'สินค้าหมด'}</span>${Number.isFinite(sold)&&sold>0?`<span>ขายแล้ว ${sold}</span>`:''}</div>
       <p class="stock">คงเหลือ ${available} ชิ้น</p>
-      <button data-add="${esc(p.id)}" ${available<1?'disabled':''}>${has?'เลือกสี / สูตร':'🛒 เพิ่มลงตะกร้า'}</button>
+      <button data-add="${esc(p.id)}" ${available<1?'disabled':''}>${has?'เลือกสี / เบอร์ / สูตร / ขนาด':'🛒 เพิ่มลงตะกร้า'}</button>
       ${p.shopee_url?`<a class="shopee-buy" href="${esc(p.shopee_url)}" target="_blank" rel="noopener noreferrer">ซื้อผ่าน Shopee</a>`:''}
     </div>
   </article>`;
@@ -141,7 +141,7 @@ function draw(){
 function variantLabel(v){
   return fields
     .filter(([k])=>v?.[k])
-    .map(([k,l])=>(k==='color'?'ตัวเลือกสินค้า':l)+': '+v[k])
+    .map(([k,l])=>l+': '+v[k])
     .join(' • ');
 }
 

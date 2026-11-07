@@ -32,8 +32,8 @@ button:disabled{opacity:.5}
 </head>
 <body>
 <div class="wrap">
-  <h2>🌸 จัดกลุ่มสินค้าอัตโนมัติ</h2>
-  <p>ระบบช่วยค้นหาสินค้าที่น่าจะเป็นรุ่นเดียวกัน เช่น สี เบอร์ สูตร และขนาด เพื่อรวมเป็นการ์ดสินค้าเดียวกัน</p>
+  <h2>🌸 รวมสินค้ารุ่นเดียวกันเป็นตัวเลือก</h2>
+  <p>ระบบแสดงเฉพาะกลุ่มที่ชื่อคล้ายกันเพื่อช่วยตรวจสอบเท่านั้น จะไม่ถือว่าเป็นรุ่นเดียวกันจนกว่าเจ้าของร้านจะตรวจชื่อและยืนยันทีละกลุ่ม</p>
 
   <div class="panel">
     <b>ค้นหาสินค้า</b>
@@ -44,7 +44,7 @@ button:disabled{opacity:.5}
 
   <div class="panel">
     <b>กลุ่มสินค้าที่ระบบแนะนำ</b>
-    <p class="small">ติ๊กเลือกกลุ่มที่ต้องการรวม ตรวจสอบชื่อสินค้าและเลือกสินค้าหลักก่อนยืนยัน</p>
+    <p class="small">ตรวจสอบชื่อและรายละเอียดทุกชิ้นก่อน จากนั้นติ๊กยืนยันว่าเป็นรุ่นเดียวกันจริง จึงจะเลือกกลุ่มเพื่อรวมได้</p>
     <div id="groups"><div class="empty">กำลังจัดกลุ่มสินค้า...</div></div>
   </div>
 
@@ -69,6 +69,7 @@ const messageEl = document.getElementById('message');
 let products = [];
 let suggestions = [];
 let selectedGroups = new Set();
+let verifiedGroups = new Set();
 let busy = false;
 
 function say(text, bad=false) {
@@ -185,10 +186,10 @@ function render() {
 
     box.innerHTML = `
       <div class="group-head">
-        <input type="checkbox" class="group-check" ${checked?'checked':''}>
+        <input type="checkbox" class="group-check" ${checked?'checked':''} ${verifiedGroups.has(index)?'':'disabled'} aria-label="เลือกกลุ่มนี้เพื่อรวม">
         <div>
-          <div class="group-title">กลุ่มสินค้าที่คล้ายกัน ${g.items.length} รายการ</div>
-          <span class="tag">ระบบแนะนำจากชื่อสินค้า</span>
+          <div class="group-title">กลุ่มที่ชื่อคล้ายกัน ${g.items.length} รายการ</div>
+          <span class="tag">เป็นเพียงคำแนะนำ ยังไม่ยืนยันว่าเป็นรุ่นเดียวกัน</span>
         </div>
       </div>
       <div class="group-products">
@@ -199,11 +200,29 @@ function render() {
           </div>
         `).join('')}
       </div>
-      <div class="small"><b>เลือกสินค้าหลักที่จะแสดงหน้าร้าน</b></div>
+      <label class="small" style="display:flex;gap:9px;align-items:flex-start;margin-top:12px;line-height:1.5">
+        <input type="checkbox" class="verify-group" ${verifiedGroups.has(index)?'checked':''} style="width:20px;height:20px;flex:0 0 auto;accent-color:#d34c91">
+        <span><b>ฉันตรวจสอบแล้วว่าสินค้าทุกรายการเป็นรุ่นเดียวกันจริง</b><br>ต่างกันเฉพาะสี เบอร์ สูตร กลิ่น หรือขนาดเท่านั้น</span>
+      </label>
+      <div class="small" style="margin-top:12px"><b>เลือกสินค้าหลักที่จะแสดงหน้าร้าน</b></div>
       <select class="parent-select">${options}</select>
     `;
 
+    box.querySelector('.verify-group').addEventListener('change', e => {
+      if (e.target.checked) verifiedGroups.add(index);
+      else {
+        verifiedGroups.delete(index);
+        selectedGroups.delete(index);
+      }
+      render();
+    });
+
     box.querySelector('.group-check').addEventListener('change', e => {
+      if (!verifiedGroups.has(index)) {
+        e.target.checked = false;
+        say('กรุณายืนยันก่อนว่าสินค้าทั้งหมดเป็นรุ่นเดียวกันจริงค่ะ', true);
+        return;
+      }
       if (e.target.checked) selectedGroups.add(index);
       else selectedGroups.delete(index);
       updateSummary();
@@ -250,6 +269,7 @@ async function loadProducts() {
   products = (data || []).filter(p => p.is_active !== false);
   suggestions = buildSuggestions(products);
   selectedGroups.clear();
+  verifiedGroups.clear();
 
   render();
   say('จัดกลุ่มสินค้าเบื้องต้นเรียบร้อย กรุณาตรวจสอบก่อนยืนยันค่ะ');
@@ -300,6 +320,11 @@ mergeBtn.addEventListener('click', async () => {
       }
       used.add(String(p.id));
     }
+  }
+
+  if (chosen.some((g, i) => !verifiedGroups.has(suggestions.indexOf(g)))) {
+    say('มีบางกลุ่มที่ยังไม่ได้ยืนยันว่าเป็นรุ่นเดียวกัน กรุณาตรวจสอบก่อนค่ะ', true);
+    return;
   }
 
   const description = chosen.map((g, i) => {
